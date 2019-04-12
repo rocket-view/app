@@ -1,0 +1,22 @@
+language: node_js
+node_js:
+- "node"
+before_install:
+- yarn install
+install:
+- yarn build
+script:
+- yarn test
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  local_dir: build
+  repo: rocket-view/rocket-view.github.io
+  target-branch: master
+  on:
+    branch: master
+  fqdn: rocket.zachdeibert.com
+cache:
+  directories:
+  - node_modules
