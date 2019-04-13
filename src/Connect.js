@@ -1,4 +1,5 @@
 import React from "react";
+import mqtt from "./mqtt";
 import "./Connect.css";
 
 const alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
@@ -14,9 +15,9 @@ export default class Connect extends React.Component {
             "server": "localhost",
             "username": "",
             "password": "",
-            "port": 1883,
+            "port": 9001,
             "client": client,
-            "ssl": true
+            "ssl": false
         };
         this.handleServerChange = this.handleServerChange.bind(this);
         this.handleUsernameChange = this.handleUsernameChange.bind(this);
@@ -24,6 +25,7 @@ export default class Connect extends React.Component {
         this.handlePortChange = this.handlePortChange.bind(this);
         this.handleClientChange = this.handleClientChange.bind(this);
         this.handleSslChange = this.handleSslChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleServerChange(ev) {
@@ -62,19 +64,26 @@ export default class Connect extends React.Component {
         });
     }
 
+    handleSubmit(ev) {
+        ev.preventDefault();
+        if (ev.target.form.checkValidity()) {
+            mqtt.connect(this.state.server, this.state.username, this.state.password, parseInt(this.state.port), this.state.client, this.state.ssl);
+        }
+    }
+
     render() {
         return (
             <div className="connect">
                 <div className="padding" />
                 <div>
                     <div className="padding" />
-                    <form action="#">
+                    <form action="#" onSubmit={this.handleSubmit}>
                         <div className="input-group">
-                            <h1>Connect to Server</h1>
+                            <h1>Connect to Rocket</h1>
                         </div>
                         <div className="input-group">
                             <label htmlFor="server">Server:</label>
-                            <input name="server" type="text" value={this.state.server} onChange={this.handleServerChange} />
+                            <input name="server" type="text" required value={this.state.server} onChange={this.handleServerChange} />
                         </div>
                         <div className="input-group">
                             <label htmlFor="username">Username:</label>
@@ -86,18 +95,18 @@ export default class Connect extends React.Component {
                         </div>
                         <div className="input-group">
                             <label htmlFor="port">Port:</label>
-                            <input name="port" type="number" min="1" max="65535" value={this.state.port} onChange={this.handlePortChange} />
+                            <input name="port" type="number" min="1" max="65535" required value={this.state.port} onChange={this.handlePortChange} />
                         </div>
                         <div className="input-group">
                             <label htmlFor="client">Client ID:</label>
-                            <input name="client" type="text" minLength="1" maxLength="23" value={this.state.client} onChange={this.handleClientChange} />
+                            <input name="client" type="text" minLength="1" maxLength="23" required value={this.state.client} onChange={this.handleClientChange} />
                         </div>
                         <div className="input-group checkbox">
                             <input name="ssl" type="checkbox" checked={this.state.ssl} onChange={this.handleSslChange} />
                             <label htmlFor="ssl">Use SSL</label>
                         </div>
                         <div className="input-group">
-                            <button className="right" type="submit">Connect</button>
+                            <button className="right" type="submit" onClick={this.handleSubmit}>Connect</button>
                         </div>
                     </form>
                     <div className="padding" />
