@@ -6,7 +6,7 @@ const alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890
 export default class Connect extends React.Component {
     constructor(props) {
         super(props);
-        let client = "rocketui-";
+        let client = "rocketui";
         while (client.length < 23) {
             client += alphabet.charAt(Math.floor(Math.random() * alphabet.length));
         }
