@@ -1,0 +1,35 @@
+.app {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #333333;
+    color: #FFFFFF;
+    font-family: 'Muli', sans-serif;
+}
+h1 {
+    text-align: center;
+}
+.right {
+    float: right;
+}
+.input-group:not(.checkbox) > label {
+    font-size: 0.7em;
+    line-height: 0.7em;
+    margin-left: 20px;
+}
+.input-group:not(.checkbox) > input {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #777777;
+    width: calc(100% - 10px);
+    box-shadow: none;
+    padding: 0 5px;
+}
+.input-group:not(.checkbox) > input:active, .input-group:not(.checkbox) > input:focus {
+    border-color: #003F00;
+}
+.input-group:not(.checkbox) > input:invalid {
+    border-color: #7F0000;
+}

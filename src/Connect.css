@@ -1,0 +1,22 @@
+.connect {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.connect .padding {
+    flex-grow: 1;
+}
+.connect > div:not(.padding) {
+    display: flex;
+    flex-direction: row;
+}
+.connect form {
+    border: 1px solid #FFFFFF;
+    border-radius: 2px;
+    background-color: #DDDDDD;
+    color: #000000;
+    box-shadow: #000000 3px 1px 10px;
+    padding: 10px;
+    min-width: 400px;
+}
