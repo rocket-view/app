@@ -59,6 +59,9 @@ let mqtt = {
                 }
             }
         }
+    },
+    "publish": (topic, msg) => {
+        client.send(topic, msg, 0, false);
     }
 };
 export default mqtt;

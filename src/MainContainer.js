@@ -1,27 +1,38 @@
 import React from "react";
 import Label from "./dataviews/Label";
+import mqtt from "./mqtt";
 import "./MainContainer.css";
 
 const components = {
     "Label": Label
 };
 
+const PUBLISH_IGNORE = 5000;
+
 export default class MainContainer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            "components": [
-                {
-                    "type": "Label",
-                    "size": {
-                        "left": 1,
-                        "right": 10,
-                        "top": 1,
-                        "bottom": 6
-                    }
-                }
-            ]
+            "components": []
         };
+        this.handlePublish = this.handlePublish.bind(this);
+        this.lastPublish = new Date(0);
+    }
+
+    componentDidMount() {
+        mqtt.subscribe("rocket_view/display_config", this.handlePublish);
+    }
+
+    componentWillUnmount() {
+        mqtt.unsubscribe("rocket_view/display_config", this.handlePublish);
+    }
+
+    handlePublish(msg) {
+        if (new Date() - this.lastPublish > PUBLISH_IGNORE) {
+            this.setState({
+                "components": JSON.parse(msg)
+            });
+        }
     }
 
     handleResize(cid, left, right, top, bottom) {
@@ -35,6 +46,8 @@ export default class MainContainer extends React.Component {
         this.setState({
             "components": comps
         });
+        this.lastPublish = new Date();
+        mqtt.publish("rocket_view/display_config/set", JSON.stringify(comps));
     }
 
     render() {
