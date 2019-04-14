@@ -1,0 +1,59 @@
+.data-view {
+    border: 3px solid #000000;
+    position: absolute;
+    position: block;
+    background-color: #333333;
+}
+.data-view > .handle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    top: 50%;
+    left: 50%;
+    margin-top: -3px;
+    margin-left: -3px;
+    border: 1px solid #000000;
+}
+.data-view > .handle:hover, .data-view > .handle:active {
+    border-color: #DDDDFF;
+}
+.data-view > .handle-top {
+    margin-top: -4.5px;
+    top: 0;
+    cursor: n-resize;
+}
+.data-view > .handle-left {
+    margin-left: -4.5px;
+    left: 0;
+    cursor: w-resize;
+}
+.data-view > .handle-bottom {
+    margin-top: -1.5px;
+    top: 100%;
+    cursor: s-resize;
+}
+.data-view > .handle-right {
+    margin-left: -1.5px;
+    left: 100%;
+    cursor: e-resize;
+}
+.data-view > .handle-top.handle-left {
+    cursor: nw-resize;
+}
+.data-view > .handle-top.handle-right {
+    cursor: ne-resize;
+}
+.data-view > .handle-bottom.handle-left {
+    cursor: sw-resize;
+}
+.data-view > .handle-bottom.handle-right {
+    cursor: se-resize;
+}
+.data-view > .container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}

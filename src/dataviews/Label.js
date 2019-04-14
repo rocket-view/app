@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import mqtt from "../mqtt";
+import DataView from "./DataView";
 
 export default class Label extends React.Component {
     constructor(props) {
@@ -89,15 +90,20 @@ export default class Label extends React.Component {
 
     render() {
         return (
-            <div className="data-view">
+            <DataView left={this.props.left} right={this.props.right} top={this.props.top} bottom={this.props.bottom} onResize={this.props.onResize}>
                 {this.state.text.split("\\n").map((x, i) => (
                     <p key={i}>{x}</p>
                 ))}
-            </div>
+            </DataView>
         );
     }
 }
 
 Label.propTypes = {
-    "format": PropTypes.string.isRequired
+    "format": PropTypes.string.isRequired,
+    "left": PropTypes.number.isRequired,
+    "right": PropTypes.number.isRequired,
+    "top": PropTypes.number.isRequired,
+    "bottom": PropTypes.number.isRequired,
+    "onResize": PropTypes.func
 };
