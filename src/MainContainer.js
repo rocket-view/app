@@ -4,10 +4,12 @@ import Graph from "./dataviews/Graph";
 import mqtt from "./mqtt";
 import "./MainContainer.css";
 import ContextMenu from "./ContextMenu";
+import Button from "./dataviews/Button";
 
 const components = {
     "Label": Label,
-    "Graph": Graph
+    "Graph": Graph,
+    "Button": Button
 };
 
 const PUBLISH_IGNORE = 5000;
