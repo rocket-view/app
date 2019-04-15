@@ -39,7 +39,7 @@ export default class Label extends React.Component {
     updateData() {
         let topics = [];
         let format = [];
-        let str = this.props.format;
+        let str = this.props.data;
         while (str.length > 0) {
             let idx = str.indexOf("{");
             if (idx < 0) {
@@ -73,14 +73,14 @@ export default class Label extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.format !== this.props.format) {
+        if (prevProps.data !== this.props.data) {
             this.clearData();
             this.updateData();
         }
     }
 
     handlePublish(msg, topic) {
-        let data = this.state.data;
+        let data = this.state.format;
         data[topic] = msg;
         this.setState({
             "data": data,
@@ -91,7 +91,7 @@ export default class Label extends React.Component {
     render() {
         return (
             <DataView left={this.props.left} right={this.props.right} top={this.props.top} bottom={this.props.bottom} onResize={this.props.onResize}>
-                {this.state.text.split("\\n").map((x, i) => (
+                {this.state.text.split("\n").map((x, i) => (
                     <p key={i}>{x}</p>
                 ))}
             </DataView>
@@ -100,7 +100,7 @@ export default class Label extends React.Component {
 }
 
 Label.propTypes = {
-    "format": PropTypes.string.isRequired,
+    "data": PropTypes.string.isRequired,
     "left": PropTypes.number.isRequired,
     "right": PropTypes.number.isRequired,
     "top": PropTypes.number.isRequired,

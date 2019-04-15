@@ -68,7 +68,7 @@ export default class MainContainer extends React.Component {
         this.state.components.forEach((comp, i) => {
             let Component = components[comp.type];
             comps.push((
-                <Component key={`comp-${i}`} format="Hello, world!\nSine wave = {rocket_view/data/sine}" topic="rocket_view/data/sine"
+                <Component key={`comp-${i}`} data={comp.data}
                     left={comp.size.left} right={comp.size.right} top={comp.size.top} bottom={comp.size.bottom}
                     onResize={this.handleResize.bind(this, i)} />
             ));

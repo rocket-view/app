@@ -12,7 +12,7 @@ export default class Graph extends React.Component {
     }
 
     componentDidMount() {
-        mqtt.subscribe(this.props.topic, this.handlePublish);
+        mqtt.subscribe(this.props.data, this.handlePublish);
         this.baseTime = new Date();
         this.data = new smoothie.TimeSeries();
         let chart = new smoothie.SmoothieChart({
@@ -27,13 +27,13 @@ export default class Graph extends React.Component {
     }
 
     componentWillUnmount() {
-        mqtt.unsubscribe(this.props.topic, this.handlePublish);
+        mqtt.unsubscribe(this.props.data, this.handlePublish);
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.topic !== this.props.topic) {
-            mqtt.unsubscribe(prevProps.topic, this.handlePublish);
-            mqtt.subscribe(this.props.topic, this.handlePublish);
+        if (prevProps.data !== this.props.data) {
+            mqtt.unsubscribe(prevProps.data, this.handlePublish);
+            mqtt.subscribe(this.props.data, this.handlePublish);
         }
     }
 
@@ -53,7 +53,7 @@ export default class Graph extends React.Component {
 }
 
 Graph.propTypes = {
-    "topic": PropTypes.string.isRequired,
+    "data": PropTypes.string.isRequired,
     "left": PropTypes.number.isRequired,
     "right": PropTypes.number.isRequired,
     "top": PropTypes.number.isRequired,
