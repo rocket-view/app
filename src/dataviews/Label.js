@@ -164,7 +164,7 @@ export default class Label extends React.Component {
                 ) : (
                     <div>
                         {this.state.text.split("\n").map((x, i) => (
-                            <p key={i}>{x}</p>
+                            <p className="label" key={i}>{x}</p>
                         ))}
                         <ContextMenu event={this.state.ctxEv} elements={[
                             "Edit Text",

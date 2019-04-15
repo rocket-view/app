@@ -7,3 +7,6 @@
     height: 100%;
     overflow: hidden;
 }
+.label {
+    text-align: center;
+}
