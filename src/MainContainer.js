@@ -3,6 +3,7 @@ import Label from "./dataviews/Label";
 import Graph from "./dataviews/Graph";
 import mqtt from "./mqtt";
 import "./MainContainer.css";
+import ContextMenu from "./ContextMenu";
 
 const components = {
     "Label": Label,
@@ -15,10 +16,12 @@ export default class MainContainer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            "components": []
+            "components": [],
+            "ctxEv": {}
         };
         this.handlePublish = this.handlePublish.bind(this);
         this.lastPublish = new Date(0);
+        this.handleContextMenu = this.handleContextMenu.bind(this);
     }
 
     componentDidMount() {
@@ -72,6 +75,39 @@ export default class MainContainer extends React.Component {
         mqtt.publish("rocket_view/display_config/set", JSON.stringify(comps));
     }
 
+    handleContextMenu(ev) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        this.setState({
+            "ctxEv": {
+                "clientX": ev.clientX,
+                "clientY": ev.clientY,
+                "ev": ev
+            }
+        });
+    }
+
+    handleAddClick(type) {
+        let x = Math.round(32 * this.state.ctxEv.clientX / document.body.clientWidth);
+        let y = Math.round(18 * this.state.ctxEv.clientY / document.body.clientHeight);
+        let comps = this.state.components;
+        comps.push({
+            "type": type,
+            "size": {
+                "left": x,
+                "right": 32 - x - 3,
+                "top": y,
+                "bottom": 18 - y - 2
+            },
+            "data": ""
+        });
+        this.setState({
+            "components": comps
+        });
+        this.lastPublish = new Date();
+        mqtt.publish("rocket_view/display_config/set", JSON.stringify(comps));
+    }
+
     render() {
         let grid = [];
         for (let x = 1; x < 32; ++x) {
@@ -94,10 +130,12 @@ export default class MainContainer extends React.Component {
             ));
         });
         return (
-            <div className="main">
+            <div className="main" onContextMenu={this.handleContextMenu}>
                 {grid}
                 {comps}
-            </div> 
+                <ContextMenu event={this.state.ctxEv} elements={Object.getOwnPropertyNames(components).map(e => `Add ${e}`)}
+                    onClick={Object.getOwnPropertyNames(components).map(e => this.handleAddClick.bind(this, e))} />
+            </div>
         );
     }
 }

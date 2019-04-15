@@ -101,6 +101,7 @@ export default class Label extends React.Component {
 
     handleContextMenu(ev) {
         ev.preventDefault();
+        ev.stopPropagation();
         this.setState({
             "ctxEv": {
                 "clientX": ev.clientX,
