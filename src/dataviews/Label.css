@@ -1,0 +1,9 @@
+.label-edit-area {
+    width: 100%;
+    height: 100%;
+}
+.label-edit-container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}

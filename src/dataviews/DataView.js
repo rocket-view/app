@@ -57,7 +57,7 @@ export default class DataView extends React.Component {
 
     render() {
         return (
-            <div className="data-view" style={{
+            <div className="data-view" onContextMenu={this.props.onContextMenu} style={{
                 "left": `${100*this.props.left/32}%`,
                 "right": `${100*this.props.right/32}%`,
                 "top": `${100*this.props.top/18}%`,
@@ -84,5 +84,6 @@ DataView.propTypes = {
     "right": PropTypes.number.isRequired,
     "top": PropTypes.number.isRequired,
     "bottom": PropTypes.number.isRequired,
-    "onResize": PropTypes.func
+    "onResize": PropTypes.func,
+    "onContextMenu": PropTypes.func
 };

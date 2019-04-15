@@ -52,6 +52,26 @@ export default class MainContainer extends React.Component {
         mqtt.publish("rocket_view/display_config/set", JSON.stringify(comps));
     }
 
+    handleDelete(cid) {
+        let comps = this.state.components;
+        comps.splice(cid, 1);
+        this.setState({
+            "components": comps
+        });
+        this.lastPublish = new Date();
+        mqtt.publish("rocket_view/display_config/set", JSON.stringify(comps));
+    }
+
+    handleDataChange(cid, data) {
+        let comps = this.state.components;
+        comps[cid].data = data;
+        this.setState({
+            "components": comps
+        });
+        this.lastPublish = new Date();
+        mqtt.publish("rocket_view/display_config/set", JSON.stringify(comps));
+    }
+
     render() {
         let grid = [];
         for (let x = 1; x < 32; ++x) {
@@ -70,7 +90,7 @@ export default class MainContainer extends React.Component {
             comps.push((
                 <Component key={`comp-${i}`} data={comp.data}
                     left={comp.size.left} right={comp.size.right} top={comp.size.top} bottom={comp.size.bottom}
-                    onResize={this.handleResize.bind(this, i)} />
+                    onResize={this.handleResize.bind(this, i)} onDelete={this.handleDelete.bind(this, i)} onDataChange={this.handleDataChange.bind(this, i)} />
             ));
         });
         return (

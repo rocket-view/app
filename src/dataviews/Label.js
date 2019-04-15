@@ -2,6 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import mqtt from "../mqtt";
 import DataView from "./DataView";
+import ContextMenu from "../ContextMenu";
+import "./Label.css";
 
 export default class Label extends React.Component {
     constructor(props) {
@@ -9,9 +11,18 @@ export default class Label extends React.Component {
         this.state = {
             "data": {},
             "format": [],
-            "text": ""
+            "text": "",
+            "ctxEv": {},
+            "edit": false,
+            "editText": ""
         };
         this.handlePublish = this.handlePublish.bind(this);
+        this.handleContextMenu = this.handleContextMenu.bind(this);
+        this.handleEditClick = this.handleEditClick.bind(this);
+        this.handleDeleteClick = this.handleDeleteClick.bind(this);
+        this.handleFinishEdit = this.handleFinishEdit.bind(this);
+        this.handleEditChange = this.handleEditChange.bind(this);
+        this.handleEditCancel = this.handleEditCancel.bind(this);
     }
 
     clearData() {
@@ -88,12 +99,81 @@ export default class Label extends React.Component {
         });
     }
 
+    handleContextMenu(ev) {
+        ev.preventDefault();
+        this.setState({
+            "ctxEv": {
+                "clientX": ev.clientX,
+                "clientY": ev.clientY,
+                "ev": ev
+            }
+        });
+    }
+
+    handleEditClick() {
+        this.setState({
+            "edit": true,
+            "editText": this.props.data
+        });
+    }
+
+    handleDeleteClick() {
+        if (this.props.onDelete) {
+            this.props.onDelete();
+        }
+    }
+
+    handleFinishEdit() {
+        this.setState({
+            "edit": false
+        });
+        if (this.props.onDataChange) {
+            this.props.onDataChange(this.state.editText);
+        }
+    }
+
+    handleEditChange(ev) {
+        this.setState({
+            "editText": ev.target.value
+        });
+    }
+
+    handleEditCancel() {
+        this.setState({
+            "edit": false
+        });
+    }
+
     render() {
         return (
-            <DataView left={this.props.left} right={this.props.right} top={this.props.top} bottom={this.props.bottom} onResize={this.props.onResize}>
-                {this.state.text.split("\n").map((x, i) => (
-                    <p key={i}>{x}</p>
-                ))}
+            <DataView left={this.props.left} right={this.props.right} top={this.props.top} bottom={this.props.bottom} onResize={this.props.onResize} onContextMenu={this.handleContextMenu}>
+                {this.state.edit ? (
+                    <div className="label-edit-container">
+                        <textarea className="label-edit-area" value={this.state.editText} onChange={this.handleEditChange} />
+                        <ContextMenu event={this.state.ctxEv} elements={[
+                            "Save",
+                            "Cancel",
+                            "Delete"
+                        ]} onClick={[
+                            this.handleFinishEdit,
+                            this.handleEditCancel,
+                            this.handleDeleteClick
+                        ]}></ContextMenu>
+                    </div>
+                ) : (
+                    <div>
+                        {this.state.text.split("\n").map((x, i) => (
+                            <p key={i}>{x}</p>
+                        ))}
+                        <ContextMenu event={this.state.ctxEv} elements={[
+                            "Edit Text",
+                            "Delete"
+                        ]} onClick={[
+                            this.handleEditClick,
+                            this.handleDeleteClick
+                        ]} />
+                    </div>
+                )}
             </DataView>
         );
     }
@@ -105,5 +185,7 @@ Label.propTypes = {
     "right": PropTypes.number.isRequired,
     "top": PropTypes.number.isRequired,
     "bottom": PropTypes.number.isRequired,
-    "onResize": PropTypes.func
+    "onResize": PropTypes.func,
+    "onDelete": PropTypes.func,
+    "onDataChange": PropTypes.func
 };
