@@ -5,11 +5,13 @@ import mqtt from "./mqtt";
 import "./MainContainer.css";
 import ContextMenu from "./ContextMenu";
 import Button from "./dataviews/Button";
+import TextInput from "./dataviews/TextInput";
 
 const components = {
     "Label": Label,
     "Graph": Graph,
-    "Button": Button
+    "Button": Button,
+    "Textbox": TextInput
 };
 
 const PUBLISH_IGNORE = 5000;
